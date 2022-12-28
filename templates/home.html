@@ -1,0 +1,99 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>HOME</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+	{% if messages %}
+		{% for category, message in messages %}
+			{% if category=='error' %}
+				<div class="alert">
+					<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+					{{message}}
+				</div>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+	{% endwith %}
+    <h1>Compare the Hype! by Sudiptto Biswas</h1>
+    <div style="text-align:center; bottom: 100px">
+    <form method="POST">
+        <input type="text" placeholder="Enter First Topic" id="Topic" name="Topic" required>
+        <br>
+        <br>
+        <input type="text" placeholder="Enter Second Topic" id="Topic2" name="Topic2" required>
+        <br>
+        <input type="submit" placeholder="Submitz" class="sbmt"> 
+    </form>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+	{% if messages %}
+		{% for category, message in messages %}
+			{% if category=='success' %}
+				<div class="alert2">
+					<h3>{{message}}</h3>
+				</div>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+	{% endwith %}
+    <br>
+    <div>
+        <canvas id="myChart"></canvas>
+      </div>
+      
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      
+      <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['{{topic_1}}', '{{topic_2}}'],
+        datasets: [{
+            label: '# Results',
+            data: ['{{first_topic}}', '{{second_topic}}'],
+            backgroundColor: [
+                'rgba(0, 0, 0, 1)',
+                'rgba(0, 0, 0, 1)'
+            ],
+            borderColor: [
+                'rgba(0, 0, 0, 1)',
+                'rgba(0, 0, 0, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        },
+        legend: {
+            labels: {
+                fontColor: 'black'
+            }
+        }
+    }
+});
+
+document.getElementById('myChart').style.backgroundColor = 'white';
+      </script>
+    <br>
+    <br>
+    <br>
+    <h1 class="head">All News Channels!</h1>
+    {% for i in sources%}
+        <h1>{{i}}</h1>
+    {% endfor %}
+</body>
+</html>
